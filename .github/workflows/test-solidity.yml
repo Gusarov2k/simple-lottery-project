@@ -1,0 +1,37 @@
+name: Test Solidity
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: |
+        if [ -f package-lock.json ]; then
+          npm ci
+        else
+          npm install
+        fi
+
+    - name: Install Hardhat (if not present)
+      run: |
+        if ! npx --no-install hardhat --version > /dev/null 2>&1; then
+          npm install --save-dev hardhat
+        fi
+
+    - name: Run Solidity tests (Hardhat)
+      run: npx hardhat test
