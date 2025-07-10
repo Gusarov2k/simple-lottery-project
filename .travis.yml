@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+  - "22"
+
+services:
+  - docker
+
+env:
+  - SOLIDITY_VERSION=0.8.28
+
+before_install:
+  # Install solc (Solidity compiler) via npm
+  - npm install -g solc
+
+install:
+  # Install project dependencies (assuming truffle or hardhat, customize as needed)
+  - npm install
+
+script:
+  # Example for Hardhat tests
+  - npx hardhat test
+  # Example for Truffle tests (uncomment if using Truffle)
+  # - npx truffle test
+
+# Cache npm dependencies for faster builds
+cache:
+  directories:
+    - node_modules
+
+# Optionally, specify branches to build
+# branches:
+#   only:
+#     - main
+#     - master
